@@ -5,6 +5,7 @@ import com.example.task.repository.PlayerRepository;
 import com.example.task.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +40,9 @@ public class PlayerResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/players")
-    public List<Player> getAllPlayers() {
+    public List<Player> getAllPlayers(Pageable pageable) {
         log.debug("REST request to get all Players");
-        List<Player> playerList = playerService.findAll();
-        List<Player> playerList1 = playerRepository.findAllPlayersOrderedById();
+        List<Player> playerList = playerService.findAll(pageable);
 
         return playerList;
     }

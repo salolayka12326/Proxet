@@ -4,6 +4,8 @@ import com.example.task.domain.Player;
 import com.example.task.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +34,8 @@ public class PlayerService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<Player> findAll() {
+    public List<Player> findAll(Pageable pageable) {
         log.debug("Request to get all Players");
-        return playerRepository.findAllPlayersOrderedById();
+        return playerRepository.findAllPlayersOrderedById(pageable).toList();
     }
 }

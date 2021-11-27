@@ -6,6 +6,8 @@ import com.example.task.service.LobbyService;
 import com.example.task.service.PlayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,16 +25,16 @@ public class LobbyResource {
     }
 
     @GetMapping("/lobby")
-    public Lobby createLobby() {
+    public Lobby createLobby(Pageable pageable) {
         log.debug("REST request to show lobby");
-        Lobby lobby=lobbyService.generateTeams(playerResource.getAllPlayers());
+        Lobby lobby=lobbyService.generateTeams(playerResource.getAllPlayers(pageable));
         return lobby;
     }
 
     @GetMapping("/delete_from_lobby")
-    public Lobby deleteFromLobby(Lobby lobby, @RequestParam String name)
+    public Lobby deleteFromLobby(Lobby lobby, @RequestParam String name,Pageable pageable)
     {
-        Lobby res=lobbyService.generateTeams(playerResource.getAllPlayers());
+        Lobby res=lobbyService.generateTeams(playerResource.getAllPlayers(pageable));
         res.deleteFromLobby(name);
 
 
@@ -40,9 +42,9 @@ public class LobbyResource {
     }
 
     @GetMapping("/add_to_lobby")
-    public Lobby addToLobby(Lobby lobby, @RequestParam String name,@RequestParam int id,@RequestParam int time,@RequestParam int type,@RequestParam int num)
+    public Lobby addToLobby(Lobby lobby, @RequestParam String name,@RequestParam int id,@RequestParam int time,@RequestParam int type,@RequestParam int num,Pageable pageable)
     {
-        Lobby res=lobbyService.generateTeams(playerResource.getAllPlayers());
+        Lobby res=lobbyService.generateTeams(playerResource.getAllPlayers(pageable));
         Player player=new Player(name,type,time);
         player.setId(777L);
         res.addToLobby(player,num);
